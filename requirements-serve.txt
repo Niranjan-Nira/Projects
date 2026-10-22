@@ -1,0 +1,7 @@
+# Minimal runtime for the Docker image (keeps it small)
+fastapi>=0.110
+uvicorn>=0.27
+scikit-learn>=1.3
+joblib>=1.3
+numpy>=1.24
+pandas>=2.0

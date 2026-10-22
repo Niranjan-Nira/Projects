@@ -1,0 +1,9 @@
+mlruns/
+reports/
+data/
+tests/
+.git/
+__pycache__/
+*.pyc
+models/distilbert_runs/
+mlflow.db

@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+mlruns/
+models/distilbert_runs/
+.venv/
+.pytest_cache/
+mlflow.db

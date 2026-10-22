@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install light dependencies (no torch needed for tests)
+        run: pip install pandas numpy scikit-learn joblib fastapi uvicorn httpx pytest mlflow
+
+      - name: Run tests
+        run: python -m pytest -q
+
+      - name: Train baseline on synthetic data (smoke test)
+        run: |
+          python -m src.make_synthetic_data --n 1500
+          python -m src.train_baseline
+
+      - name: Build Docker image
+        run: docker build -t ticket-router:ci .
+
+      - name: Run container and hit /health
+        run: |
+          docker run -d -p 8000:8000 --name tr ticket-router:ci
+          for i in $(seq 1 20); do curl -sf localhost:8000/health && break || sleep 2; done
+          curl -sf -X POST localhost:8000/predict -H "Content-Type: application/json" \
+            -d '{"text":"I was charged twice this month"}'
