@@ -1,0 +1,385 @@
+{
+ "args": {
+  "uci": null,
+  "n": 30000,
+  "seed": 0,
+  "folds": 5,
+  "fn_cost": 3.0,
+  "shap_n": 3000,
+  "n_boot": 1000,
+  "min_group": 100,
+  "quick": false,
+  "out": "results"
+ },
+ "data": {
+  "n": 30000,
+  "default_rate": 0.20616666666666666,
+  "n_features": 26,
+  "group_default_rates": {
+   "sex": {
+    "female": 0.2128,
+    "male": 0.1962
+   },
+   "age_group": {
+    "30-44": 0.1924,
+    "45+": 0.185,
+    "<30": 0.2511
+   },
+   "marriage": {
+    "married": 0.2066,
+    "other": 0.1895,
+    "single": 0.2065
+   }
+  }
+ },
+ "cv": [
+  {
+   "model": "lightgbm",
+   "auc": 0.8542,
+   "pr_auc": 0.6419,
+   "ks": 0.5531,
+   "brier": 0.1121,
+   "logloss": 0.3583
+  },
+  {
+   "model": "xgboost",
+   "auc": 0.8549,
+   "pr_auc": 0.6437,
+   "ks": 0.5547,
+   "brier": 0.1118,
+   "logloss": 0.3575
+  }
+ ],
+ "cv_tests": {
+  "auc_paired_t": 0.07361797014755901,
+  "note": "fold scores share training data => p-values are optimistic; read as a rough guide, not proof",
+  "oof_auc_diff_xgb_minus_lgbm": {
+   "diff": 0.0007749882189088558,
+   "ci": [
+    -3.565701831425847e-05,
+    0.0015484224471300375
+   ]
+  }
+ },
+ "selected_model": "xgboost",
+ "calibration": [
+  {
+   "model": "unweighted",
+   "calibration": "raw",
+   "ece": 0.0153730736,
+   "auc": 0.8494767017,
+   "brier": 0.1134522781,
+   "logloss": 0.3630000055,
+   "intercept": -0.0769716352,
+   "slope": 0.9137092233,
+   "mean_pred": 0.2055548429,
+   "base_rate": 0.2061333333
+  },
+  {
+   "model": "unweighted",
+   "calibration": "sigmoid*",
+   "ece": 0.0145393427,
+   "auc": 0.8494766474,
+   "brier": 0.1133678481,
+   "logloss": 0.362593025,
+   "intercept": 0.0156185972,
+   "slope": 0.9575503469,
+   "mean_pred": 0.1996872723,
+   "base_rate": 0.2061333333
+  },
+  {
+   "model": "unweighted",
+   "calibration": "isotonic",
+   "ece": 0.0074156462,
+   "auc": 0.848187875,
+   "brier": 0.1135309264,
+   "logloss": 0.3645357192,
+   "intercept": -0.0178589411,
+   "slope": 0.9165151715,
+   "mean_pred": 0.1991524696,
+   "base_rate": 0.2061333333
+  },
+  {
+   "model": "class-weighted(spw=3.9)",
+   "calibration": "raw",
+   "ece": 0.1601898427,
+   "auc": 0.8492128201,
+   "brier": 0.1496703625,
+   "logloss": 0.4578384161,
+   "intercept": -1.2235201597,
+   "slope": 0.9135600328,
+   "mean_pred": 0.366323173,
+   "base_rate": 0.2061333333
+  },
+  {
+   "model": "class-weighted(spw=3.9)",
+   "calibration": "sigmoid*",
+   "ece": 0.0106623591,
+   "auc": 0.8492128201,
+   "brier": 0.1129923165,
+   "logloss": 0.362226218,
+   "intercept": 0.0195321664,
+   "slope": 0.9594456553,
+   "mean_pred": 0.1995241195,
+   "base_rate": 0.2061333333
+  },
+  {
+   "model": "class-weighted(spw=3.9)",
+   "calibration": "isotonic",
+   "ece": 0.0091817328,
+   "auc": 0.848332092,
+   "brier": 0.1134703457,
+   "logloss": 0.3651838303,
+   "intercept": -0.0264565051,
+   "slope": 0.9090932012,
+   "mean_pred": 0.1989761442,
+   "base_rate": 0.2061333333
+  }
+ ],
+ "operating_point": {
+  "threshold": 0.24,
+  "calibrator": "sigmoid",
+  "fn_cost": 3.0,
+  "n": 7500.0,
+  "base_rate": 0.20613333333333334,
+  "flag_rate": 0.29213333333333336,
+  "tpr": 0.720569210866753,
+  "fpr": 0.18088679879072891,
+  "ppv": 0.508443633044272,
+  "fnr": 0.2794307891332471,
+  "acc": 0.7988,
+  "tp": 1114.0,
+  "fp": 1077.0,
+  "fn": 432.0,
+  "tn": 4877.0
+ },
+ "calibration_by_group_significant": [
+  {
+   "attr": "age_group",
+   "group": "<30",
+   "n": 1958,
+   "observed": 0.2559,
+   "predicted": 0.2176,
+   "gap_pred_minus_obs": -0.0383,
+   "z": 5.0063,
+   "p": 0.0,
+   "p_holm": 0.0,
+   "significant": true
+  }
+ ],
+ "fairness": {
+  "excluded_small_groups": {
+   "sex": [],
+   "age_group": [],
+   "marriage": []
+  },
+  "disparate_impact": {
+   "sex": {
+    "male": 1.0346089507046319
+   },
+   "age_group": {
+    "45+": 1.0285470943407704,
+    "<30": 0.9448045928188324
+   },
+   "marriage": {
+    "married": 1.0140317839305755,
+    "other": 1.0345931467023814
+   }
+  },
+  "chi2": {
+   "sex": {
+    "chi2": 4.9908362816940235,
+    "dof": 1,
+    "p": 0.025481890825273523,
+    "cramers_v": 0.025796217504882438
+   },
+   "age_group": {
+    "chi2": 15.696169801878446,
+    "dof": 2,
+    "p": 0.0003904990970655877,
+    "cramers_v": 0.045747378506865936
+   },
+   "marriage": {
+    "chi2": 1.1065064401412337,
+    "dof": 2,
+    "p": 0.5750759154266432,
+    "cramers_v": 0.012146365383061353
+   }
+  },
+  "permutation": {
+   "sex": {
+    "tpr": {
+     "observed_spread": 0.010214811476641161,
+     "p": 0.6473526473526473
+    },
+    "fpr": {
+     "observed_spread": 0.015178716963558048,
+     "p": 0.13986013986013987
+    }
+   },
+   "age_group": {
+    "tpr": {
+     "observed_spread": 0.010843178507849216,
+     "p": 0.932067932067932
+    },
+    "fpr": {
+     "observed_spread": 0.014909504562901965,
+     "p": 0.4975024975024975
+    }
+   },
+   "marriage": {
+    "tpr": {
+     "observed_spread": 0.11138716356107659,
+     "p": 0.2517482517482518
+    },
+    "fpr": {
+     "observed_spread": 0.03390858318340653,
+     "p": 0.4325674325674326
+    }
+   }
+  },
+  "n_significant": 1,
+  "n_tests": 20
+ },
+ "mitigation_group_thresholds": {
+  "sex": {
+   "thresholds": {
+    "female": 0.24722854793071747,
+    "male": 0.20732396841049194
+   },
+   "accuracy_before": 0.7988,
+   "accuracy_after": 0.7897333333333333,
+   "max_abs_tpr_gap_before": 0.010214811476641161,
+   "max_abs_tpr_gap_after": 0.0351721761259709,
+   "max_abs_fpr_gap_before": 0.015178716963558048,
+   "max_abs_fpr_gap_after": 0.030713936430317862
+  },
+  "age_group": {
+   "thresholds": {
+    "<30": 0.212856262922287,
+    "30-44": 0.2448352575302124,
+    "45+": 0.265880823135376
+   },
+   "accuracy_before": 0.7988,
+   "accuracy_after": 0.7977333333333333,
+   "max_abs_tpr_gap_before": 0.010037984521581222,
+   "max_abs_tpr_gap_after": 0.039139382395761424,
+   "max_abs_fpr_gap_before": 0.007782557598378176,
+   "max_abs_fpr_gap_after": 0.03924280250007581
+  }
+ },
+ "shap_top_features": {
+  "mean_delinq": 0.7099999785423279,
+  "avg_util": 0.3154999911785126,
+  "PAY_0": 0.26080000400543213,
+  "LIMIT_BAL": 0.17910000681877136,
+  "n_late": 0.16590000689029694,
+  "util_ratio": 0.13539999723434448,
+  "PAY_6": 0.10300000011920929,
+  "pay_ratio": 0.09809999912977219,
+  "max_delinq": 0.09300000220537186,
+  "PAY_AMT2": 0.0674000009894371
+ },
+ "reason_codes_example": {
+  "highest_risk": [
+   {
+    "feature": "mean_delinq",
+    "value": 6.833333333333333,
+    "shap": 2.1486902236938477
+   },
+   {
+    "feature": "avg_util",
+    "value": 1.27358,
+    "shap": 0.9126486778259277
+   },
+   {
+    "feature": "PAY_0",
+    "value": 7.0,
+    "shap": 0.6634414196014404
+   },
+   {
+    "feature": "util_ratio",
+    "value": 1.32494,
+    "shap": 0.42959538102149963
+   }
+  ],
+  "lowest_risk": [
+   {
+    "feature": "BILL_AMT3",
+    "value": 0.0,
+    "shap": 0.08964015543460846
+   },
+   {
+    "feature": "BILL_AMT4",
+    "value": 0.0,
+    "shap": 0.06278854608535767
+   },
+   {
+    "feature": "BILL_AMT1",
+    "value": 0.0,
+    "shap": 0.0429314449429512
+   },
+   {
+    "feature": "PAY_AMT5",
+    "value": 0.0,
+    "shap": 0.029814481735229492
+   }
+  ],
+  "borderline": [
+   {
+    "feature": "LIMIT_BAL",
+    "value": 60000.0,
+    "shap": 0.41772496700286865
+   },
+   {
+    "feature": "avg_util",
+    "value": 0.9113444444444444,
+    "shap": 0.36341509222984314
+   },
+   {
+    "feature": "util_ratio",
+    "value": 0.8509333333333333,
+    "shap": 0.12562742829322815
+   },
+   {
+    "feature": "PAY_AMT1",
+    "value": 14621.0,
+    "shap": 0.1127164289355278
+   }
+  ]
+ },
+ "shap_additivity_max_err": 4.76837158203125e-06,
+ "reliance_significant": [],
+ "aware_vs_unaware": {
+  "auc_unaware": 0.8494766473971862,
+  "auc_aware": 0.8511184931825323
+ },
+ "aware_shap_rank_of_protected": {
+  "SEX": 29,
+  "AGE": 5,
+  "MARRIAGE": 27
+ },
+ "aware_shap_share_of_protected": {
+  "SEX": 0.003185197012498975,
+  "AGE": 0.045941755175590515,
+  "MARRIAGE": 0.005222553387284279
+ },
+ "proxy_audit": {
+  "sex": {
+   "auc_predict_from_nonprotected": 0.5794474059454102,
+   "top_proxy_features": [
+    "LIMIT_BAL",
+    "PAY_AMT4",
+    "PAY_AMT2"
+   ]
+  },
+  "age_group": {
+   "auc_predict_from_nonprotected": 0.6657690173370768,
+   "top_proxy_features": [
+    "max_delinq",
+    "mean_delinq",
+    "LIMIT_BAL"
+   ]
+  }
+ }
+}
