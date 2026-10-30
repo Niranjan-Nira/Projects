@@ -31,9 +31,3 @@ Outputs land in `outputs/`: `results.md` / `results.csv` (benchmark table),
 - Cost = latency x GPU hourly price (`GPU_PRICE_PER_HOUR` in `common.py`) plus the
   one-time training cost, so you can compute the break-even request volume.
 - Hyperparameters were not tuned on the test set.
-
-## Extend it (good resume add-ons)
-- Merge the adapter and serve with FastAPI + Docker.
-- Ablate LoRA rank (r = 4 / 8 / 16 / 32) and plot accuracy vs trainable params.
-- Add a fine-tuned DistilBERT baseline to show when an LLM is not worth it.
-- Error analysis: inspect confusable intents (e.g. card_arrival vs card_delivery_estimate) in `predictions.csv`.
