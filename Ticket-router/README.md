@@ -20,7 +20,7 @@ FastAPI service with a confidence-threshold layer that sends uncertain tickets t
 | Tests / CI | `tests/`, `.github/workflows/ci.yml` | pytest, smoke training, Docker build and container health check |
 | Container | `Dockerfile` | Slim image using a minimal runtime requirements file |
 
-## IMPORTANT: use real data before putting numbers on your resume
+## IMPORTANT: 
 
 `src/make_synthetic_data.py` creates a small **synthetic** dataset so everything runs out of the box.
 It is intentionally easy, so scores near 98% F1 mean nothing. Replace `data/tickets.csv` with a real
@@ -64,7 +64,7 @@ docker build -t ticket-router .
 docker run -p 8000:8000 ticket-router
 ```
 
-## Results (fill in from YOUR real run)
+## Results ()
 
 | Model | Micro-F1 | Macro-F1 | Latency (ms/request) | Train time |
 |---|---|---|---|---|
@@ -77,15 +77,6 @@ Paired bootstrap difference in micro-F1 (DistilBERT minus baseline): `____  95% 
 Routing: at confidence threshold `____`, `__%` of tickets are automated with micro-F1 `____`;
 the rest go to human review.
 
-## Design decisions to explain in interviews
-
-- **Same split for every model**, test set used once, so differences are real.
-- **Paired bootstrap** instead of a single run, so "better" is backed by an interval.
-- **Latency and cost are reported next to accuracy**, since the question is when fine-tuning is justified.
-- **Threshold chosen from a coverage-vs-quality curve**, not guessed.
-- **Class weights** handle imbalance; add label-noise checks on real data (review disagreements).
-- **Model loaded once at startup** and requests validated with Pydantic.
-- **Small serving image**: training dependencies are not shipped to production.
 
 ## Limitations and next steps
 
